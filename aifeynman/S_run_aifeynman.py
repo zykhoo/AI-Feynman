@@ -40,6 +40,7 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
     data = np.loadtxt(pathdir+filename)
 
     # Run bf and polyfit
+#     print("before run_bf_polyfit", pathdir,pathdir,filename,pathdir_orig,filename_orig,BF_try_time,BF_ops_file_type)
     PA = run_bf_polyfit(pathdir,pathdir,filename,pathdir_orig,filename_orig,BF_try_time,BF_ops_file_type, PA, polyfit_deg)
     PA = get_squared(pathdir,"results/mystery_world_squared/",filename,pathdir_orig,filename_orig,BF_try_time,BF_ops_file_type, PA, polyfit_deg)   
 
@@ -196,7 +197,7 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
         print("Translational symmetry found for variables:", symmetry_plus_result[1],symmetry_plus_result[2])
         new_pathdir, new_filename = do_translational_symmetry_plus(pathdir,filename,symmetry_plus_result[1],symmetry_plus_result[2])
         PA1_ = ParetoSet()
-        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
+        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
         PA = add_sym_on_pareto(pathdir,filename,PA1,symmetry_plus_result[1],symmetry_plus_result[2],PA,"+")
         return PA
 
@@ -204,7 +205,7 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
         print("Translational symmetry found for variables:", symmetry_minus_result[1],symmetry_minus_result[2])
         new_pathdir, new_filename = do_translational_symmetry_minus(pathdir,filename,symmetry_minus_result[1],symmetry_minus_result[2])
         PA1_ = ParetoSet()
-        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
+        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
         PA = add_sym_on_pareto(pathdir,filename,PA1,symmetry_minus_result[1],symmetry_minus_result[2],PA,"-")
         return PA
 
@@ -212,7 +213,7 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
         print("Translational symmetry found for variables:", symmetry_multiply_result[1],symmetry_multiply_result[2])
         new_pathdir, new_filename = do_translational_symmetry_multiply(pathdir,filename,symmetry_multiply_result[1],symmetry_multiply_result[2])
         PA1_ = ParetoSet()
-        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
+        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
         PA = add_sym_on_pareto(pathdir,filename,PA1,symmetry_multiply_result[1],symmetry_multiply_result[2],PA,"*")
         return PA
 
@@ -220,8 +221,8 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
         print("Translational symmetry found for variables:", symmetry_divide_result[1],symmetry_divide_result[2])
         new_pathdir, new_filename = do_translational_symmetry_divide(pathdir,filename,symmetry_divide_result[1],symmetry_divide_result[2])
         PA1_ = ParetoSet()
-        print(new_pathdir, new_filename,filename_orig,pathdir_orig)
-        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
+        print(new_pathdir, new_filename,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type)
+        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
         PA = add_sym_on_pareto(pathdir,filename,PA1,symmetry_divide_result[1],symmetry_divide_result[2],PA,"/")
         return PA
 
@@ -229,9 +230,9 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
         print("Additive separability found for variables:", separability_plus_result[1],separability_plus_result[2])
         new_pathdir1, new_filename1, new_pathdir2, new_filename2,  = do_separability_plus(pathdir,filename,separability_plus_result[1],separability_plus_result[2])
         PA1_ = ParetoSet()
-        PA1 = run_AI_all(new_pathdir1,new_filename1,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
+        PA1 = run_AI_all(new_pathdir1,new_filename1,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
         PA2_ = ParetoSet()
-        PA2 = run_AI_all(new_pathdir2,new_filename2,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA2_)
+        PA2 = run_AI_all(new_pathdir2,new_filename2,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA2_)
         combine_pareto_data = np.loadtxt(pathdir+filename)
         PA = combine_pareto(combine_pareto_data,PA1,PA2,separability_plus_result[1],separability_plus_result[2],PA,"+")
         return PA
@@ -240,9 +241,9 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
         print("Multiplicative separability found for variables:", separability_multiply_result[1],separability_multiply_result[2])
         new_pathdir1, new_filename1, new_pathdir2, new_filename2,  = do_separability_multiply(pathdir,filename,separability_multiply_result[1],separability_multiply_result[2])
         PA1_ = ParetoSet()
-        PA1 = run_AI_all(new_pathdir1,new_filename1,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
+        PA1 = run_AI_all(new_pathdir1,new_filename1,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
         PA2_ = ParetoSet()
-        PA2 = run_AI_all(new_pathdir2,new_filename2,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA2_)
+        PA2 = run_AI_all(new_pathdir2,new_filename2,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA2_)
         combine_pareto_data = np.loadtxt(pathdir+filename)
         PA = combine_pareto(combine_pareto_data,PA1,PA2,separability_multiply_result[1],separability_multiply_result[2],PA,"*")
         return PA
@@ -251,7 +252,7 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
         print("Compositionality found")
         new_pathdir, new_filename = do_compositionality(pathdir,filename,math_eq_comp)
         PA1_ = ParetoSet()
-        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
+        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
         PA = add_comp_on_pareto(PA1,PA,math_eq_comp)
         return PA
 
@@ -259,7 +260,7 @@ def run_AI_all(pathdir,filename,filename_orig,pathdir_orig,bias=[1,1,1,1,1,1,1,1
         print("Generalized symmetry found")
         new_pathdir, new_filename = do_gen_sym(pathdir,filename,decomp_idx,math_eq_gen_sym)
         PA1_ = ParetoSet()
-        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
+        PA1 = run_AI_all(new_pathdir,new_filename,filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA1_)
         PA = add_gen_sym_on_pareto(PA1,PA, decomp_idx, math_eq_gen_sym)
         return PA
     else:
@@ -292,6 +293,7 @@ def run_aifeynman(pathdir,filename,BF_try_time,BF_ops_file_type, bias=[1,1,1,1,1
 
     PA = ParetoSet()
     # Run the code on the train data
+#     print("before run_AI_all", pathdir,filename+"_train",filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type)
     PA = run_AI_all(pathdir,filename+"_train",filename_orig,pathdir_orig,bias,BF_try_time,BF_ops_file_type, polyfit_deg, NN_epochs, PA=PA)
     PA_list = PA.get_pareto_points()
 
