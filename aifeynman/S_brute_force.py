@@ -49,25 +49,25 @@ def brute_force(pathdir, filename, BF_try_time, BF_ops_file_type, sep_type="*", 
 
     shutil.copy2(pathdir+filename, "mystery.dat")
     
-    try:
-        print(_get_resource(file_type))
-    except:
-        print("cant print get resource file type")
+#     try:
+#         print(_get_resource(file_type))
+#     except:
+#         print("cant print get resource file type")
    
-    try:
-        print( _get_resource("arity2templates.txt"))
-    except:
-        print("cant print get resource arity2templates")
+#     try:
+#         print( _get_resource("arity2templates.txt"))
+#     except:
+#         print("cant print get resource arity2templates")
         
-    try:
-        print(sigma)
-    except:
-        print("cant print sigma")
+#     try:
+#         print(sigma)
+#     except:
+#         print("cant print sigma")
 
-    try:
-        print(band)
-    except:
-        print("cant print band")
+#     try:
+#         print(band)
+#     except:
+#         print("cant print band")
 
     data = "'{}' '{}' mystery.dat results.dat {:f} {:f}".format(_get_resource(file_type),
                                                                 _get_resource(
