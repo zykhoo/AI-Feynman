@@ -90,3 +90,7 @@ If you compare with, build on, or use aspects of the AI Feynman work, please cit
 2. Changing S_run_aifeynman to remove the test for generalised symmetry (always fails)
 3. To solve bug 1 above, we compute the mean squared error on $(y-f(x))^2$ instead of $(t(y)-g(x))^2$. This means that we import the original dataset to ```run_bf_polyfit``` to compute $(y-f(x))^2$.
 4. (for inductive bias) We add argument called ```bias``` to ```run_bf_polyfit```. ```bias``` is a list corresponding to functions (trigo, exponential, polynomial, inverse). If ```bias``` is 1 then the function is used to find the unknown equation. If ```bias``` is 0 then the function is excluded from the search space for the unknown equation. 
+
+
+# Other notes
+1. Regarding ```get_symbolic_expr_error(data,expr)``` and the loss function ```np.mean(np.log2(1+abs(f(*real_variables)[good_idx]-data[good_idx][:,-1])*2**30))```: this is the description length loss based on this thesis: https://arxiv.org/pdf/2001.03780.pdf). On page 54 of 352 for the thesis, equation 2.7, Wu states that the description length of a real number r with a precision floor e is log_2(1+|r/e|). Minimising the total description length instead of the mean squared error corresponds to minimizing the geometric mean instead of the arithmetic mean of the squared errors, which encourages focusing on improving already well fit points (stated on page 55). Therefore the formula that AI Feynman is using finds the description length of a real number (the absolute error) with a precision floor 2^(-30). 
